@@ -10,12 +10,12 @@ FramesMeasured = 10
 
 
 if __name__ == "__main__":
-    video = RotatingResizingVideoCapture("LiveTimeArya.mp4")
+    video = RotatingResizingVideoCapture("aryaDancing.mp4")
     video.reset()
     
     detector = PoseMarker()
     dataset = Dataset(framesPerSample=FramesMeasured)
-    cvTrainingLayout = cvDatasetLayout.Canvas(["Nothing","Left","Right","Touch","e","f","e","g","h","i","j","k"])
+    cvTrainingLayout = cvDatasetLayout.Canvas(["Nothing","Hello","Excited","PointLeft","PointRight","Powerful","e","g","h","i","j","k"])
 
     loopNum =0
     listOfPoints = []

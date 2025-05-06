@@ -16,7 +16,8 @@ elif modelType =="Forward":
     video = RotatingResizingVideoCapture('Hand-Signals-Lvl2.mp4')
 elif modelType =="LiveTime":
     model = joblib.load('random_forest_LiveTimeArya.pkl')
-    video = cv2.VideoCapture(0)
+    capController = cv2.VideoCapture(0)
+    video = RotatingResizingVideoCapture('aryaDancing.mp4')
 
 
 
@@ -26,16 +27,16 @@ loopNum =0
 listOfPoints = []
 prediction= "Nothing"
 
-if modelType !="LiveTime":
-    video.reset()
+video.reset()
 
 while True:
     
     loopNum +=1
-    ret, frame = video.read()
-
-    if not ret:
-        break
+    if modelType =="LiveTime":
+        ret,frame = capController.read()
+        frame = video.readFrame(frame)
+    else:
+        ret, frame = video.read()
 
     #process frame
     frame_rgb, points = detector.process(frame)

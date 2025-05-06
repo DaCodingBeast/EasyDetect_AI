@@ -16,7 +16,6 @@ class RotatingResizingVideoCapture:
             self.cropper.inputImage(frame)
             self.cropper.draw_box()
             cv2.waitKey(1)  
-
         self.reset()
 
     def _get_screen_size(self):
@@ -51,6 +50,20 @@ class RotatingResizingVideoCapture:
         frame = self._resize_to_screen(frame)
         
         return ret, frame
+    def readFrame(self, frame):
+
+        if self.rotate_code is not None:
+            frame = cv2.rotate(frame, self.rotate_code)
+
+        frame = self._resize_to_screen(frame)
+        if ImageCropper.done:
+            rect = self.cropper.rectangle
+            frame = frame[rect[0]:rect[1], rect[2]:rect[3]]
+        
+        #resize for cropper
+        frame = self._resize_to_screen(frame)
+        
+        return frame
 
     def isOpened(self):
         return self.cap.isOpened()
