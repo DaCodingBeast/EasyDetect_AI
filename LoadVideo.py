@@ -3,10 +3,14 @@ from PoseDatasets import Dataset
 from PoseDetector import PoseMarker
 from VideoWrapperClass import RotatingResizingVideoCapture
 import cvDatasetLayout
-from cropImage import ImageCropper
 
 
-FramesMeasured = 10
+FramesMeasured = 5
+
+def getPointsFromFrame():
+    ret,frame = video.read()
+    frame_rgb, points = detector.process(frame)
+    return frame_rgb, points
 
 
 if __name__ == "__main__":
@@ -15,7 +19,7 @@ if __name__ == "__main__":
     
     detector = PoseMarker()
     dataset = Dataset(framesPerSample=FramesMeasured)
-    cvTrainingLayout = cvDatasetLayout.Canvas(["Nothing","Hello","Excited","PointLeft","PointRight","Powerful","e","g","h","i","j","k"])
+    cvTrainingLayout = cvDatasetLayout.Canvas(["Nothing","Y","M","C","A","b","e","z","z","z","z","z"])
 
     loopNum =0
     listOfPoints = []
@@ -24,22 +28,15 @@ if __name__ == "__main__":
     while True:
         
         loopNum +=1
-        ret, frame = video.read()
-
-        if not ret:
-            break
-
-        #process frame
-        frame_rgb, points = detector.process(frame)
-        # Try again if failed
-        if points is None:
-            frame_rgb, points = detector.process(frame)
+        frame_rgb, points = getPointsFromFrame()
+        while points is None:
+            frame_rgb, points = getPointsFromFrame()
 
         listOfPoints.append(points)
 
         cvTrainingLayout.run()
 
-        cv2.imshow("Video",frame)
+        cv2.imshow("Video",frame_rgb)
 
         while loopNum % FramesMeasured ==0 and cvTrainingLayout.clicked == False:
             cv2.waitKey(1)

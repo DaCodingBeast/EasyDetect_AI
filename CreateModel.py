@@ -6,7 +6,7 @@ from LoadVideo import FramesMeasured
 from sklearn.ensemble import RandomForestClassifier
 
 Input, Output = Dataset.getFlattenedDataset('pose_data.csv',framesPerSample=FramesMeasured)
-x_train, x_test, y_train, y_test = train_test_split(Input,Output,test_size=.3, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(Input,Output,test_size=.2, random_state=42)
 
 model = RandomForestClassifier(
     n_estimators=200,         # Use 200 trees

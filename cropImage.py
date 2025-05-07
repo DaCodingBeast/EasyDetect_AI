@@ -6,15 +6,16 @@ class ImageCropper():
     done = False
     rectangle = None
 
-    def __init__(self, firstFrame, aspectRatio = .8):
+    def __init__(self, firstFrame, aspectRatio = 800/1280):
         
         self.aspectRatio = aspectRatio
         height, width = firstFrame.shape[:2]
+        
         self.height = height
         self.width = width
 
         self.boxCenter =[width//2,height//2]
-        self.boxsize = int(min(height,width))
+        self.boxsize = int(max(height,width))-1
 
         #First frame
         self.image =firstFrame
@@ -25,6 +26,12 @@ class ImageCropper():
         cv2.setMouseCallback("Image", ImageCropper.mouse_callback, param=self)
 
 
+        self.boxCenter = [800/2, 1280/2]
+        ImageCropper.done = True
+        cv2.destroyWindow("Image")
+        ImageCropper.rectangle = [0,800,0,1280]
+
+
     def inputImage(self,image):
         self.image = image
 
@@ -33,13 +40,12 @@ class ImageCropper():
     
     def mouse_callback(event, x, y, flags, param):
         self = param
-        image = self.image
 
-        self.boxCenter = [x, y]
+        # self.boxCenter = [x, y]
 
-        if event == cv2.EVENT_LBUTTONDOWN:
-            ImageCropper.done = True
-            cv2.destroyWindow("Image")
+        # if event == cv2.EVENT_LBUTTONDOWN:
+        #     ImageCropper.done = True
+        #     cv2.destroyWindow("Image")
 
     
     def draw_box(self):

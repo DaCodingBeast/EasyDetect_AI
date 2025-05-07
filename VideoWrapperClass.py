@@ -28,8 +28,11 @@ class RotatingResizingVideoCapture:
 
     def _resize_to_screen(self, frame):
         h, w = frame.shape[:2]
-        scale = min(self.screen_width / w, self.screen_height / h)  # Only shrink
-        return cv2.resize(frame, (int(w * scale), int(h * scale)))
+        if h !=0 and w !=0:
+            scale = min(self.screen_width / w, self.screen_height / h)  # Only shrink
+            return cv2.resize(frame, (int(w * scale), int(h * scale)))
+        else:
+            return frame
 
     def read(self):
         ret, frame = self.cap.read()
